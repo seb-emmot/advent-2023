@@ -2,6 +2,7 @@ package day4
 
 import (
 	"fmt"
+	"math"
 	"slices"
 	"strconv"
 	"strings"
@@ -44,17 +45,24 @@ func NewCard(line string) Card {
 }
 
 func (c Card) CalcPoints() int {
-	pts := 0
-	for _, num := range c.OwnNumbers {
-		if slices.Contains(c.Winners, num) {
-			if pts == 0 {
-				pts = 1
-			} else {
-				pts *= 2
-			}
-		}
+	wins := c.GetWinnerCount()
+
+	var pts int
+	if wins > 0 {
+		pts = int(math.Pow(2.0, float64(wins-1)))
+
 	}
 	return pts
+}
+
+func (c Card) GetWinnerCount() int {
+	wins := 0
+	for _, num := range c.OwnNumbers {
+		if slices.Contains(c.Winners, num) {
+			wins++
+		}
+	}
+	return wins
 }
 
 func (c Card) Print() {
@@ -63,12 +71,41 @@ func (c Card) Print() {
 
 func Day4(input []string) {
 	points := 0
+
+	duplicates := map[int]int{}
+
 	for _, line := range input {
 		c := NewCard(line)
+		cardCount, ok := duplicates[c.Id]
+		if !ok {
+			cardCount = 1
+		} else {
+			// dupes + original
+			cardCount++
+		}
 
 		pts := c.CalcPoints()
 		points += pts
 
-		fmt.Println(pts, points)
+		wins := c.GetWinnerCount()
+		for i := 1; i <= wins; i++ {
+			dupes, ok := duplicates[c.Id+i]
+			if !ok {
+				dupes = 0
+			}
+			dupes += cardCount
+			duplicates[c.Id+i] = dupes
+		}
 	}
+
+	fmt.Println("p1 points", points)
+
+	sumDupes := 0
+	for _, val := range duplicates {
+		sumDupes += val
+	}
+
+	total := len(input) + sumDupes
+
+	fmt.Println("p2 total cards", total)
 }
