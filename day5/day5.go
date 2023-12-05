@@ -102,7 +102,7 @@ func calculateP2(line string, rms []ReagentMap) int {
 	return curMin
 }
 
-func MyTask(input []string) {
+func Day5(input []string) {
 	seeds := []int{}
 	maps := []ReagentMap{}
 	buf := []string{}
