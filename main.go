@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/seb-emmot/advent-2023/day5"
+	"github.com/seb-emmot/advent-2023/day6"
 	"github.com/seb-emmot/advent-2023/utils"
 )
 
 func main() {
-	input := utils.ReadFile("inputs/day5.txt")
-	// input := utils.ReadFile("inputs/day5_sample.txt")
+	input := utils.ReadFile("inputs/day6.txt")
+	// input := utils.ReadFile("inputs/day6_sample.txt")
 
-	day5.Day5(input)
+	day6.Day6(input)
 }
